@@ -2,11 +2,15 @@ import {
     View,
     StyleSheet,
     ScrollView,
+    PermissionsAndroid,
+    Platform,
+    Alert,
 } from 'react-native';
 import { Text , Input } from '@rneui/base';
 import { Dropdown } from 'react-native-element-dropdown';
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from 'react-native-elements';
+import { launchCamera } from "react-native-image-picker";
 
 const styles = StyleSheet.create({
     container : {
@@ -80,12 +84,13 @@ const SignUp = (props) => {
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('')
     const [confirm,setConfirmed] = useState('')
+    const [filePath,setFilePath] = useState(null);
+
 
     const [firstnameFocused,setFirstnameFocused] = useState(false);
     const [lastnameFocused,setLastnameFocused] = useState(false);
     const [cnicFocused,setcnicFocused] = useState(false);
     const [experienceFocused,setexperienceFocused] = useState(false);
-    const [contactFocused,setcontactFocused] = useState('');
     const [emailFocused,setemailFocused] = useState('');
     const [passwordFocused,setpasswordFocused] = useState('')
     const [confirmFocused,setconfirmedFocused] = useState('')
@@ -95,6 +100,64 @@ const SignUp = (props) => {
     const cnicCriteria = /[0-9]{5}(-)[0-9]{7}(-)[0-9]/;
     const emailCriteria = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i
     const passwordCriteria = /[a-zA-Z0-9]{8,}/i;
+
+    const requestCameraPermission = async () => {
+        if(Platform.OS === 'android'){
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                        title : 'Camera Permissions',
+                        message : 'MaidIn requires access to your device camera'
+                    }
+                );
+                return granted === PermissionsAndroid.RESULTS.GRANTED;
+            }
+            catch(err){
+                return false;
+            }
+        }
+        else return true;
+    }
+
+    const captureImage = async () => {
+        let options = {
+            mediaType : 'photo',
+            maxWidth : 300,
+            maxHeight : 550,
+            quality  : 1,
+            videoQuality : 'low',
+            durationLimit : 30,
+            saveToPhotos : true
+        }
+        let isCameraPermitted = await requestCameraPermission();
+        if(isCameraPermitted){
+            launchCamera(options,(response)=>{
+                if(response.errorCode == 'camera_unavailable'){
+                    Alert.alert(
+                        'Camera Status',
+                        'Camera not Available on Device',
+                    )
+                    return;
+                }
+                else if(response.errorCode == 'permission'){
+                    Alert.alert(
+                        'Camera Status',
+                        'Permissions not Satisfied',
+                    )
+                    return;
+                }
+                else if(response.errorCode == 'others'){
+                    Alert.alert(
+                        'Camera Status',
+                        response.errorCode,
+                    )
+                    return;
+                }
+                setFilePath(response);
+            })
+        }
+    }
 
     const submit = () => {
         const isFirstNameValid = nameCriteria.test(firstname);
@@ -106,8 +169,11 @@ const SignUp = (props) => {
         const password_match = (password === confirm)
         const isExperienceValid = (!isNaN(experience) && (Number(experience)> 0 && Number(experience) < 100))
 
-        if(isFirstNameValid && isLastNameValid && isCNICValid && isExperienceValid && isExperienceValid && isEmailValid && isPasswordValid && isConfirmedValid && password_match){
-            // go to reference page
+        if(isFirstNameValid && isLastNameValid && isCNICValid && isExperienceValid && isExperienceValid && isEmailValid && isPasswordValid && isConfirmedValid && password_match && filePath && serviceType){
+            Alert.alert(
+                'Navigation Action',
+                'Go to References Form'
+            )
         }
     }
 
@@ -229,12 +295,14 @@ const SignUp = (props) => {
                 <View style = {styles.buttons}>
                     <Button
                     title = {'Camera'}
+                    onPress = {captureImage}
                     containerStyle = {{marginLeft : 10,marginRight : 10,borderWidth : 3 , borderRadius : 30}}
                     titleStyle = {{fontSize : 25 , fontWeight : 'bold',color : 'white'}}
                     buttonStyle = {{backgroundColor : '#36FF92', borderRadius : 30}}
                     />
                     <Button
                     title = {'Next'}
+                    onPress = {submit}
                     containerStyle = {{margin : 10,borderWidth : 3 , borderRadius : 30}}
                     titleStyle = {{fontSize : 25 , fontWeight : 'bold',color : 'white'}}
                     buttonStyle = {{backgroundColor : '#36FF92', borderRadius : 30}}
