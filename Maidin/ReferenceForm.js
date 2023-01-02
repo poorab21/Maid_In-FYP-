@@ -73,7 +73,15 @@ const ReferenceForm = (props) => {
     }
 
     const submit = () => {
-        console.log(references)
+        if(references.length >= 2){
+            // submit registration form
+        }
+        else {
+            Alert.alert(
+                'Maid-In',
+                'Atleast 2 References must be Submitted'
+            )
+        }
     }
 
 
