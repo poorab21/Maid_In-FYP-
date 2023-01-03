@@ -1,8 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import ReferenceForm from "./ReferenceForm";
 import {
+
+
   Modal,
   Pressable,
   Image,
@@ -55,12 +56,12 @@ export default function App() {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <ReferenceForm/>
+                <Text style={styles.modalText}>Add Your Form Here</Text>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => setModalVisible(!modalVisible)}
                 >
-                  <Text style={styles.textStyle}>Hide Modal</Text>
+                  <Text style={styles.textStyle}>Save</Text>
                 </Pressable>
               </View>
             </View>
@@ -69,7 +70,7 @@ export default function App() {
             style={[styles.button, styles.buttonOpen]}
             onPress={() => setModalVisible(true)}
           >
-            <Text style={styles.textStyle}>Show Modal</Text>
+            <Text style={styles.textStyle}>Add Refferences +</Text>
           </Pressable>
         </View>
       </View>
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
   },
   box: {
     width: "70%",
-    height: "70%",
+    height: "80%",
     backgroundColor: "#fff8dc",
     alignItems: "center",
     borderBottomLeftRadius: 10,
@@ -138,8 +139,6 @@ const styles = StyleSheet.create({
     marginTop: 22
   },
   modalView: {
-    width:"80%",
-    height:"70%",
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
@@ -155,17 +154,21 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   button: {
+    width: 220,
     borderRadius: 20,
     padding: 10,
-    elevation: 2
+    elevation: 2,
+  
   },
   buttonOpen: {
+    width:220,
     backgroundColor: "#F194FF",
   },
   buttonClose: {
     backgroundColor: "#2196F3",
   },
   textStyle: {
+    
     color: "white",
     fontWeight: "bold",
     textAlign: "center"
