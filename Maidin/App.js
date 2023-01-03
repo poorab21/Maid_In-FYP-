@@ -1,9 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { FlatList, StyleSheet, Text, View } from 'react-native';
+import ReferenceForm from "./ReferenceForm";
 import {
-
-
   Modal,
   Pressable,
   Image,
@@ -12,6 +11,7 @@ import {
   TouchableOpacity,
   Box,
 } from "react-native";
+
 export default function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -55,7 +55,7 @@ export default function App() {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Hello World!</Text>
+                <ReferenceForm/>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => setModalVisible(!modalVisible)}
@@ -138,6 +138,8 @@ const styles = StyleSheet.create({
     marginTop: 22
   },
   modalView: {
+    width:"80%",
+    height:"70%",
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
