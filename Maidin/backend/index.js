@@ -7,10 +7,11 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors());
-app.use(express.urlencoded({ extended: true }))
+
 
 mongoose.connect("mongodb+srv://maidin1901:inam@cluster0.lwiq1jo.mongodb.net/?retryWrites=true&w=majority",{
-
+    useNewUrlParser:true,
+    useUnifiedTopology:true
 });()=>{
     console.log("connected to DB")
 }
@@ -62,5 +63,5 @@ app.post("/Register",(req,res)=>{
 }) 
 
 app.listen(6969,()=>{
-    console.log("started server")
+    console.log("started")
 })
