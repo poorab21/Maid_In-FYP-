@@ -1,11 +1,13 @@
 const express = require("express");
 const cors = require('cors')
 const mongoose = require('mongoose')
+const SP = require('./Models/ServiceProvider.model')
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors());
+
 
 
 mongoose.connect("mongodb+srv://maidin1901:inam@cluster0.lwiq1jo.mongodb.net/?retryWrites=true&w=majority",{
@@ -17,19 +19,19 @@ mongoose.connect("mongodb+srv://maidin1901:inam@cluster0.lwiq1jo.mongodb.net/?re
 
 
 //Service Provider schema 
-const ServiceProviderSchema = new mongoose.Schema({
-    firstname: String,
-    lastname : String,
-    cnic : String,
-    experience : Number,
-    contact : String,
-    email : String,
-    password : String,
-    serviceType : String,
-    photo : []
-})
+// const ServiceProviderSchema = new mongoose.Schema({
+//     firstname: String,
+//     lastname : String,
+//     cnic : String,
+//     experience : Number,
+//     contact : String,
+//     email : String,
+//     password : String,
+//     serviceType : String,
+//     photo : []
+// })
 
-const SP = new mongoose.model("Service Provider", ServiceProviderSchema)
+// const SP = new mongoose.model("Service Provider", ServiceProviderSchema)
 
 //routes routes
 app.post("/Login",(req,res)=>{
@@ -49,9 +51,16 @@ app.post("/Login",(req,res)=>{
 app.post("/Register",(req,res)=>{
     const {firstname,lastname,cnic,experience,contact,email,password,serviceType,photo} = req.body;
   SP.findOne({
-    cnic : cnic,
-    contact : contact,
-    email : email
+    $or : [{
+        email : email,
+    },
+    {
+        cnic : cnic
+    },
+    {
+        contact : contact
+    }
+]
   },(err,data)=>{
     if(data){
         res.json({

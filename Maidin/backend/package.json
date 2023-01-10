@@ -1,14 +1,13 @@
 {
-  "name": "backend",
+  "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "maidIn Server",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
-  "author": "inamsaif",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
