@@ -1,7 +1,6 @@
-import express from "express";
-// const express = require("express");
-import cors from "cors";
-import mongoose from "mongoose";
+const express = require("express");
+const cors = require('cors')
+const mongoose = require('mongoose')
 
 const app = express();
 app.use(express.json());
@@ -17,14 +16,20 @@ mongoose.connect("mongodb+srv://maidin1901:inam@cluster0.lwiq1jo.mongodb.net/?re
 }
 
 
-//user schema 
-const userSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    password: String
+//Service Provider schema 
+const ServiceProviderSchema = new mongoose.Schema({
+    firstname: String,
+    lastname : String,
+    cnic : String,
+    experience : Number,
+    contact : String,
+    email : String,
+    password : String,
+    serviceType : String,
+    photo : []
 })
 
-const User = new mongoose.model("User", userSchema)
+const SP = new mongoose.model("Service Provider", ServiceProviderSchema)
 
 //routes routes
 app.post("/Login",(req,res)=>{
@@ -42,26 +47,53 @@ app.post("/Login",(req,res)=>{
     })
 });
 app.post("/Register",(req,res)=>{
-    console.log(req.body) 
-    const {name,email,password} =req.body;
-    User.findOne({email:email},(err,user)=>{
-        if(user){
-            res.send({message:"user already exist"})
-        }else {
-            const user = new User({name,email,password})
-            user.save(err=>{
-                if(err){
-                    res.send(err)
-                }else{
-                    res.send({message:"sucessfull"})
-                }
-            })
-        }
-    })
+    const {firstname,lastname,cnic,experience,contact,email,password,serviceType,photo} = req.body;
+  SP.findOne({
+    cnic : cnic,
+    contact : contact,
+    email : email
+  },(err,data)=>{
+    if(data){
+        res.json({
+            already_exists : true,
+            message : 'Service Provider with same email,CNIC or contact already exists'
+        })
+    }
+    else {
+        const new_SP = new SP({
+            firstname : firstname ,
+            lastname : lastname ,
+            experience : experience ,
+            cnic : cnic ,
+            contact : contact ,
+            email : email ,
+            serviceType : serviceType,
+            password : password,
+            photo : photo
 
-
+        })
+        new_SP.save((err)=>{
+            if(err){
+                res.json({
+                    error_in_storage : true, 
+                    message : 'Some error occurred in saving the Service Provider data'
+                })
+            }
+            else {
+                res.json({
+                    success : true,
+                    message : 'Data succesfully taken'
+                })
+            }
+        })
+    }
+  })  
 }) 
 
-app.listen(6969,()=>{
+app.get('/',(req,res)=>{
+    res.send('MaidIn Main Page')
+})
+
+app.listen(3000,()=>{
     console.log("started")
 })
