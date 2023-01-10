@@ -105,7 +105,7 @@ const SignUp = (props) => {
     
 
     const nameCriteria = /[a-zA-Z]{3,}/i;
-    const cnicCriteria = /[0-9]{5}(-)[0-9]{7}(-)[0-9]/;
+    const cnicCriteria = /^[0-9]{5}(-)[0-9]{7}(-)[0-9]$/;
     const emailCriteria =  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/i
     const passwordCriteria = /[a-zA-Z0-9]{8,}/i;
 
