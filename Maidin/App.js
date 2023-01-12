@@ -1,181 +1,48 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import {
+import React from 'react';
+import ReferenceForm from './Pages/ReferenceForm'
+import SignUp from './Pages/SignUp';
+import ModalBox from './Component/ModalReference';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from './Pages/login';
 
+const App = () => {
+      const stack = createNativeStackNavigator();
+      const options = {
+            headerStyle : {
+                  backgroundColor : '#36FF92',
+            },
+            headerTitleStyle : {
+                  fontSize : 30,
+            },
+            headerTitleAlign : 'center'
+      }
 
-  Modal,
-  Pressable,
-  Image,
-  TextInput,
-  Button,
-  TouchableOpacity,
-  Box,
-} from "react-native";
-
-export default function App() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
-  return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      <View style={styles.box}>
-        <View styles={styles.heading}>
-          <Text style={styles.text}>Refferences</Text>
-        </View>
-        <View style={styles.list}>
-          <View style={styles.contain}>
-            <FlatList
-              data={[
-                { key: 'Devin' },
-                { key: 'Dan' },
-                { key: 'Dominic' },
-                { key: 'Jackson' },
-                { key: 'James' },
-                { key: 'Joel' },
-                { key: 'John' },
-                { key: 'Jillian' },
-                { key: 'Jimmy' },
-                { key: 'Julie' },
-              ]}
-              renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
-            />
-          </View>
-
-        </View>
-        <View style={styles.centeredView}>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>Add Your Form Here</Text>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}
-                >
-                  <Text style={styles.textStyle}>Save</Text>
-                </Pressable>
-              </View>
-            </View>
-          </Modal>
-          <Pressable
-            style={[styles.button, styles.buttonOpen]}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text style={styles.textStyle}>Add Refferences +</Text>
-          </Pressable>
-        </View>
-      </View>
-    </View>
-  );
+      return (
+            <NavigationContainer>
+                  <stack.Navigator initialRouteName='Registration'>
+                        <stack.Screen 
+                        name='Maid-In' 
+                        component={SignUp}
+                        options = {options}
+                        />
+                        <stack.Screen
+                        name='References'
+                        component={ModalBox}
+                        options = {options}
+                        />
+                        <stack.Screen
+                        name='login'
+                        component={Login}
+                        options = {{
+                              ...options,
+                              headerTitle : 'Sign In'
+                        }}
+                        />
+                  </stack.Navigator>
+            </NavigationContainer>
+      )
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#dcdcdc",
-    alignItems: "center",
-    justifyContent: "center",
-
-  },
-  box: {
-    width: "70%",
-    height: "80%",
-    backgroundColor: "#fff8dc",
-    alignItems: "center",
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    overflow: 'hidden',
-  },
-  heading: {
-    width: "70%",
-    height: "40%",
-
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: "bold",
-
-  },
-  list: {
-    width: "80%",
-    height: "78%",
-    backgroundColor: "#dcdcdc",
-    marginTop: 20,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    overflow: 'hidden',
-  },
-  contain: {
-    flex: 1,
-    paddingTop: 22
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
-  button: {
-    marginTop: 10,
-    width: 220,
 
 
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
-  },
-  button: {
-    width: 220,
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  
-  },
-  buttonOpen: {
-    width:220,
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center"
-  }
-
-});
+export default App;
